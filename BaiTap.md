@@ -71,3 +71,50 @@ if ( lpMem )
 ```
 
 Như vậy, có thể nói rằng mã độc đã đạt được kỹ thuật persistence như: Registry Keys, Startup Programs.
+
+### 3. Strings của file mã độc gợi ý điều gì?
+Sau khi strings file mã độc, em có thế thấy được một số điều như:
+- các API liên quan tới việc quản lí file hay registry: RegSetValueExA
+RegOpenKeyExA
+RegDeleteValueA
+RegFlushKey
+RegCloseKey
+- Các hàm mã hóa: CryptAcquireContextW
+CryptDeriveKey
+CryptReleaseContext
+CryptEncrypt
+CryptCreateHash
+CryptDestroyKey
+CryptDecrypt
+CryptDestroyHash
+CryptHashData
+- các hàm liên quan tới mạng, truyền tải dữ liệu: InternetQueryDataAvailable
+InternetReadFile
+InternetCloseHandle
+HttpQueryInfoA
+InternetConnectA
+InternetSetOptionA
+HttpOpenRequestA
+HttpSendRequestA
+InternetOpenA
+- các hàm quản lí dữ liệu: 
+CreateFileA
+FindResourceA
+LoadResource
+HeapAlloc
+HeapFree
+GetProcessHeap
+WriteFile
+SizeofResource
+GetLastError
+LockResource
+GetModuleHandleA
+CloseHandle
+GetComputerNameA
+HeapReAlloc
+MoveFileExA
+
+Bên cạnh đó, có một số dữ kiện đặc biệt khác như:
+- `Software\Microsoft\Windows\CurrentVersion\Run`, như phần phân tích sơ lược ở trên, đây là một register key. có thể mã độc sử dụng các kỹ thuật liên quan.
+- `brbconfig.tmp`, `brbbot` là tên các tệp được file mã độc tạo ra.
+- `HTTP/1.1 Connection: close`, `%s?i=%s&c=%s&p=%s`, `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)` là request, url với các params, và một User-agent giả. Có thể khẳng định rằng mã độc này liên quan tới việc truyền thông tin, dữ liệu mạng internet
