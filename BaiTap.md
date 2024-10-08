@@ -70,7 +70,7 @@ if ( lpMem )
 }
 ```
 
-Như vậy, có thể nói rằng mã độc đã đạt được kỹ thuật persistence như: Registry Keys, Startup Programs.
+Như vậy, có thể nói rằng mã độc đã đạt được kỹ thuật persistence như: Registry Keys, Startup Programs. Mã độc này đã lưu các tệp nguy hiểm vào trong `Appdata` của người dùng, đồng thời xóa dấu vết để người dùng không phát hiện.
 
 ### 3. Strings của file mã độc gợi ý điều gì?
 Sau khi strings file mã độc, em có thế thấy được một số điều như:
@@ -118,3 +118,8 @@ Bên cạnh đó, có một số dữ kiện đặc biệt khác như:
 - `Software\Microsoft\Windows\CurrentVersion\Run`, như phần phân tích sơ lược ở trên, đây là một register key. có thể mã độc sử dụng các kỹ thuật liên quan.
 - `brbconfig.tmp`, `brbbot` là tên các tệp được file mã độc tạo ra.
 - `HTTP/1.1 Connection: close`, `%s?i=%s&c=%s&p=%s`, `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)` là request, url với các params, và một User-agent giả. Có thể khẳng định rằng mã độc này liên quan tới việc truyền thông tin, dữ liệu mạng internet
+
+### 4. Dấu hiệu file của mã độc xuất hiện trên máy nạn nhân?
+Tuy rằng các file có thể được xóa sau khi mã độc thực hiện(?), em có thể sẽ kiểm tra file `brbconfig.tmp` hay `brbbot` trong `\AppData\Local\Temp\` chẳng hạn.
+
+Còn có thể kiểm tra Register key xem liệu có mã độc xuất hiện ở đấy không.
