@@ -128,8 +128,35 @@ Còn có thể kiểm tra Register key xem liệu có mã độc xuất hiện �
 Như đã trình bày ở các phần trên, sau khi phân tích file mã độc thì phát hiện được rất nhiều dấu hiệu về Network.
 
 Em sẽ trình bày lại quá trình từ đầu về network:
+- Có kiểu dữ liệu HINTERNET, struct WSAData 
 - Đầu tiên, WSAStartup khởi tạo winsock
 - Sau khi lấy được config của người dùng (?),hàm `sub_140001C10` khởi tạo url với param (param có thể chứa config người dùng (?) `%s?i=%s&c=%s&p=%s`), đồng thời lấy IP của người dùng, khởi tạo 1 user-agent và request.
 - Mã độc cũng đã nhận dữ liệu từ CCsever, sau đó tạo file brb là mã độc và mã hóa. Sau đó có thể gây ảnh hưởng tới máy bị nhiễm mã độc (?).
 - Hàm cũng sử dụng API `InternetCloseHandle` và `WaitForSingleObject`.
 
+### 6. Mã độc sử dụng thuật toán gì để giải mã config?
+Em chưa thấy phần mà mã độc sử dụng thuật toán để giải mã, tuy nhiên em đã thấy nhiều những phân đoạn mã hóa.
+
+Ví dụ mã độc đã mã hóa url được gửi đi bằng cách xor dữ liệu với một vị trí trong file:
+```cpp
+*v13++ ^= *(_BYTE *)(a1 + 1300);
+```
+sau đó chuyển sang hex và có thể sử dụng secret key sau để kí:
+```
+qmemcpy(v27, "#3#or%5452o#8A", 14);
+```
+Mã độc cũng đã sử dụng hàm băm để mã hóa file `brbconfig.tmp`
+```cpp
+  }
+  if ( !CryptAcquireContextW(&phProv, 0i64, L"Microsoft Enhanced Cryptographic Provider v1.0", 1u, 0) )
+    GetLastError();
+  if ( (GetLastError() != -2146893802
+     || CryptAcquireContextW(&phProv, 0i64, L"Microsoft Enhanced Cryptographic Provider v1.0", 1u, 8u))
+    && CryptCreateHash(phProv, 0x8003u, 0i64, 0, &phHash)
+    && CryptHashData(phHash, "YnJiYm90", 8u, 0)
+    && CryptDeriveKey(phProv, 0x6801u, phHash, 0x800000u, &phKey) )
+  {
+```
+
+### 7. Mã độc thuộc loại mã độc nào?
+Mã độc có thể là một Trojan có khả năng tạo backdoor.
