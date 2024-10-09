@@ -123,3 +123,13 @@ Bên cạnh đó, có một số dữ kiện đặc biệt khác như:
 Tuy rằng các file có thể được xóa sau khi mã độc thực hiện(?), em có thể sẽ kiểm tra file `brbconfig.tmp` hay `brbbot` trong `\AppData\Local\Temp\` chẳng hạn.
 
 Còn có thể kiểm tra Register key xem liệu có mã độc xuất hiện ở đấy không.
+
+### 5. Dấu hiệu về network của mã độc?
+Như đã trình bày ở các phần trên, sau khi phân tích file mã độc thì phát hiện được rất nhiều dấu hiệu về Network.
+
+Em sẽ trình bày lại quá trình từ đầu về network:
+- Đầu tiên, WSAStartup khởi tạo winsock
+- Sau khi lấy được config của người dùng (?),hàm `sub_140001C10` khởi tạo url với param (param có thể chứa config người dùng (?) `%s?i=%s&c=%s&p=%s`), đồng thời lấy IP của người dùng, khởi tạo 1 user-agent và request.
+- Mã độc cũng đã nhận dữ liệu từ CCsever, sau đó tạo file brb là mã độc và mã hóa. Sau đó có thể gây ảnh hưởng tới máy bị nhiễm mã độc (?).
+- Hàm cũng sử dụng API `InternetCloseHandle` và `WaitForSingleObject`.
+
