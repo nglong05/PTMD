@@ -13,3 +13,11 @@ Sử dụng `rundll32 Lab3-2.dll`, system infomer không phát hiện thấy ch�
 Thử với entrypoint `Install`, ta thấy file `rundll32.exe`
 
 ![image](https://github.com/user-attachments/assets/dccfb03e-6b44-4e12-8778-aa718870f276)
+#### Phân tích hàm `Install`
+- Đầu tiên, hàm mở regiskey `HKEY_LOCAL_MACHINE`
+- Sau đó hàm sẽ lấy giá trị của registry key và lưu vào `Data`
+- Hàm sẽ kiểm tra xem trong Data có giá trị String2 hay không, có thể là một chuỗi dịch vụ
+- Kết nối đến SCM và tạo dịch vụ, cấu hình vào Registry sao cho file dll được thực thi mỗi khi máy chạy
+- Như vậy, hàm Install có thể cài đặt một dịch vụ lên máy khi được thực thi 
+
+#### Phân tích hàm `ServiceMain`
